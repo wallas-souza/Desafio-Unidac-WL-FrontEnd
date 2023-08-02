@@ -1,0 +1,78 @@
+<mat-card>
+  <mat-toolbar color="primary">Adicionar Colaborador</mat-toolbar>
+  <mat-card-content>
+    <form [formGroup]="form" class="min-width">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Nome" formControlName="nome" #nome />
+        <mat-hint align="end">{{ nome.value.length }}/100</mat-hint>
+        <mat-error *ngIf="form.get('nome')?.invalid">{{
+          formUtils.getErrorMessage(form,"nome")
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Cpf" formControlName="cpf" #cpf />
+        <mat-hint align="end">{{ cpf.value.length }}/11</mat-hint>
+        <mat-error *ngIf="form.get('cpf')?.invalid">{{
+          formUtils.getErrorMessage(form,"cpf")
+        }}</mat-error>
+      </mat-form-field>
+      <mat-toolbar>
+        <span>Opção de café da manhã</span>
+        <button mat-icon-button color="accent" (click)="addNovoCafe()">
+          <mat-icon aria-label="Adicionar uma opção de café da manhã"
+            >add</mat-icon
+          >
+        </button>
+      </mat-toolbar>
+
+      <mat-error *ngIf="formUtils.ifFormArrayRequired(form, 'cafes')"> Adicione pelo menos um café e uma data </mat-error>
+
+      <table
+        style="width: 100%"
+        formArrayName="cafes"
+        *ngFor="let cafe of getCafesFormArray(); let i = index"
+      >
+        <tr [formGroupName]="i">
+          <td style="width: 65%">
+            <mat-form-field class="full-width">
+              <mat-label>Opção do café</mat-label>
+              <input matInput formControlName="item" (input)="onNomeInputChange($event)" />
+              <mat-error *ngIf="getCafesFormArray()[i].get('item')">
+                {{ formUtils.getFormArrayFieldErrorMessage(form, "cafes", "item", i) }}
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td style="width: 35%">
+            <mat-form-field class="full-width">
+              <mat-label>Escolhar uma data Futura</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="data" />
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="getCafesFormArray()[i].get('data')">
+                {{ formUtils.getFormArrayFieldErrorMessage(form, "cafes", "data", i) }}
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td>
+            <button mat-icon-button color="warn" (click)="removerCafe(i)">
+              <mat-icon aria-label="Remover uma opção de café da manhã"
+                >delete</mat-icon
+              >
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="onSubmit()">
+      Salvar
+    </button>
+    <button mat-raised-button (click)="onCancel()">Cancelar</button>
+  </mat-card-actions>
+</mat-card>

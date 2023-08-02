@@ -1,0 +1,20 @@
+<mat-card>
+  <mat-toolbar color="primary">Café da manhã</mat-toolbar>
+
+  <div class="column-flex mat-elevation-z8">
+    <app-colaboradores-list
+      *ngIf="colaboradores$ | async as colaboradores; else loading"
+      [colaboradores]="colaboradores"
+      (add)="onAdd()"
+      (edit)="onEdit($event)"
+      (remove)="onDelete($event)"
+      (check)="onCheck($event)">
+    </app-colaboradores-list>
+
+    <ng-template #loading>
+      <div class="loading-spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+    </ng-template>
+  </div>
+</mat-card>

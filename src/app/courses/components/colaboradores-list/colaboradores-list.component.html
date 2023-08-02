@@ -1,0 +1,78 @@
+<mat-table [dataSource]="colaboradores">
+  <!-- Name Column -->
+  <ng-container matColumnDef="nome">
+    <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+    <mat-cell *matCellDef="let colaborador">{{ colaborador.nome }}</mat-cell>
+  </ng-container>
+
+  <!-- CPF Column -->
+  <ng-container matColumnDef="cpf">
+    <mat-header-cell *matHeaderCellDef>CPF</mat-header-cell>
+    <mat-cell *matCellDef="let colaborador">{{ colaborador.cpf }} </mat-cell>
+  </ng-container>
+
+  <!-- item Column -->
+  <ng-container matColumnDef="itens">
+    <mat-header-cell *matHeaderCellDef>Itens</mat-header-cell>
+    <mat-cell *matCellDef="let colaborador">{{
+      getArrayItem(colaborador).join(", ")
+    }}</mat-cell>
+  </ng-container>
+
+    <!-- item Column -->
+    <ng-container matColumnDef="data">
+      <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
+      <mat-cell *matCellDef="let colaborador">
+        <ng-container *ngFor="let dataItem of getArrayData(colaborador)">
+          {{ dataItem | date:"dd/MM/yyyy"}}
+          <br>
+        </ng-container>
+      </mat-cell>
+    </ng-container>
+
+  <!-- ações Column -->
+  <ng-container matColumnDef="ações">
+    <mat-header-cell *matHeaderCellDef class="action-column-header">
+      <button
+        mat-mini-fab
+        color="accent"
+        aria-label="Adicionar um colaborador"
+        (click)="onAdd()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-header-cell>
+
+    <mat-cell *matCellDef="let colaborador" class="action-column">
+      <button
+        mat-icon-button
+        color="primary"
+        aria-label="Editar um colaborador"
+        (click)="onEdit(colaborador)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        color="warn"
+        aria-label="Deletar um colaborador"
+        (click)="onDelete(colaborador)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        color="accent"
+        aria-label="Checar um colaborador"
+        (click)="onCheck(colaborador)"
+      >
+        <mat-icon>check_circle_outline</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
